@@ -126,6 +126,8 @@ int main()
 
         glUseProgram(program);
         glBindVertexArray(VAO);
+        // here can replace GL_FILL with GL_LINE/GL_POINT
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
 
