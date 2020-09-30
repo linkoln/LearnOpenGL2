@@ -97,6 +97,12 @@ int main()
                                        "{\n"
                                        "    FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
                                        "}\n\0";
+    const std::string fragmentShader2 = "#version 330 core\n"
+                                        "out vec4 FragColor;\n"
+                                        "void main()\n"
+                                        "{\n"
+                                        "    FragColor = vec4(1.0f, 1.0f, 0.0f, 1.0f);\n"
+                                        "}\n\0";
 
     unsigned int VBO[2], VAO[2];
     glGenVertexArrays(2, VAO);
@@ -115,7 +121,8 @@ int main()
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof (float), (void*)0);
 
-    unsigned int program = CreateShader(vertexShader, fragmentShader);
+    unsigned int program1 = CreateShader(vertexShader, fragmentShader);
+    unsigned int program2 = CreateShader(vertexShader, fragmentShader2);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
@@ -127,10 +134,11 @@ int main()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glUseProgram(program);
+        glUseProgram(program1);
         glBindVertexArray(VAO[0]);
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
+        glUseProgram(program2);
         glBindVertexArray(VAO[1]);
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
@@ -141,7 +149,8 @@ int main()
 
     glDeleteBuffers(2, VBO);
     glDeleteVertexArrays(2, VAO);
-    glDeleteProgram(program);
+    glDeleteProgram(program1);
+    glDeleteProgram(program2);
 
     glfwTerminate();
 
