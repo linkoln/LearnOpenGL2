@@ -3,4 +3,5 @@ TEMPLATE = subdirs
 SUBDIRS += \
     Exercises \
     HelloTriangle \
-    HelloWindow
+    HelloWindow \
+    Shaders
