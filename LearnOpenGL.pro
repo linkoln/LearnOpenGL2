@@ -4,4 +4,5 @@ SUBDIRS += \
     Exercises \
     HelloTriangle \
     HelloWindow \
-    Shaders
+    Shaders \
+    Utils/Shader
