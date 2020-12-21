@@ -21,8 +21,10 @@ GLAD = "E:\librarys\glad"
 
 CONFIG(debug, debug|release) {
     BUILD_TYPE = debug
+    TARGET = Shaderd
 } else {
     BUILD_TYPE = release
+    TARGET = Shader
 }
 
 INCLUDEPATH += $$GLFW/$$BUILD_TYPE/include
@@ -30,6 +32,19 @@ INCLUDEPATH += $$GLAD/include
 
 LIBS += -L$$GLFW/$$BUILD_TYPE/lib -lglfw3
 LIBS += -lopengl32 -lgdi32 -luser32
+
+DESTDIR = $$PWD/lib/$$BUILD_TYPE
+
+COPY_HEADERS = Shader_global.h
+COPY_HEADERS += Shader.h
+for (Header, COPY_HEADERS) {
+    SourcePath = $$PWD/$$Header
+    DestPath = $$PWD/include
+    SourcePath = $$replace(SourcePath, /, \\)
+    DestPath = $$replace(DestPath, /, \\)
+    QMAKE_PRE_LINK += copy $$SourcePath $$DestPath &
+}
+
 
 SOURCES += \
     Shader.cpp \

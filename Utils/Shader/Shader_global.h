@@ -1,12 +1,12 @@
 #ifndef SHADER_GLOBAL_H
 #define SHADER_GLOBAL_H
 
-#include <QtCore/qglobal.h>
+//#include <QtCore/qglobal.h>
 
 #if defined(SHADER_LIBRARY)
-#  define SHADER_EXPORT Q_DECL_EXPORT
+#  define SHADER_API __declspec(dllexport)
 #else
-#  define SHADER_EXPORT Q_DECL_IMPORT
+#  define SHADER_API __declspec(dllimport)
 #endif
 
 #endif // SHADER_GLOBAL_H

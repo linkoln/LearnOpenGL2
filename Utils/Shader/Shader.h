@@ -5,7 +5,7 @@
 
 #include "Shader_global.h"
 
-class SHADER_EXPORT SHADER
+class SHADER_API SHADER
 {
 public:
     SHADER();
