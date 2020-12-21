@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cmath>
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -106,9 +107,10 @@ int main()
                                      "}\n\0";
     const std::string fragmentShader = "#version 330 core\n"
                                        "out vec4 FragColor;\n"
+                                       "uniform vec4 ourColor;//set this variable in the opengl code.\n"
                                        "void main()\n"
                                        "{\n"
-                                       "    FragColor = vec4(0.5f, 0.0f, 0.0f, 1.0f);\n"
+                                       "    FragColor = ourColor;\n"
                                        "}\n\0";
 
     unsigned int VBO, VAO;
@@ -135,6 +137,13 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT);
 
         glUseProgram(program);
+
+        // update the uniform color
+        float timeValue = glfwGetTime();
+        float greenValue = sin(timeValue) / 2.0f + 0.5f;
+        int vertexColorLocation = glGetUniformLocation(program, "ourColor");
+        glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
+
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 3);
         glBindVertexArray(0);
