@@ -27,3 +27,6 @@ INCLUDEPATH += $$PWD/../Utils/Shader/include
 LIBS += -L$$GLFW/$$BUILD_TYPE/lib -lglfw3
 LIBS += -lopengl32 -lgdi32 -luser32
 
+RESOURCES += \
+    shaders.qrc
+
