@@ -1,13 +1,43 @@
 #include "Shader.h"
 
+#include <iostream>
+#include <fstream>
+#include <sstream>
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-#include <iostream>
 
-using namespace std;
+using std::string;
+using std::ifstream;
+using std::cout;
+using std::endl;
 
-SHADER::SHADER()
+#define LOG_SIZE 512
+
+SHADER::SHADER(const string& sVertexPath, const string& sFragPath)
 {
+    ifstream oVertexFile, oFragFile;
+    oVertexFile.exceptions(ifstream::failbit | ifstream::badbit);
+    oFragFile.exceptions(ifstream::failbit | ifstream::badbit);
+    string sVertexShader, sFragShader;
+    try
+    {
+        oVertexFile.open(sVertexPath);
+        oFragFile.open(sFragPath);
+        std::stringstream ssShaderStream, ssFragStream;
+        ssShaderStream << oVertexFile.rdbuf();
+        ssFragStream << oFragFile.rdbuf();
+        oVertexFile.close();
+        oFragFile.close();
+        sVertexShader = ssShaderStream.str();
+        sFragShader = ssFragStream.str();
+    }
+    catch (ifstream::failure& e)
+    {
+        cout << __func__ << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ" << endl;
+    }
+
+    _iID = CreateShader(sVertexPath, sFragShader);
 }
 
 unsigned int SHADER::CompileShader(unsigned int type, const std::string& source)
@@ -29,29 +59,49 @@ unsigned int SHADER::CompileShader(unsigned int type, const std::string& source)
     return id;
 }
 
-unsigned int SHADER::CreateShader(const std::string& vertexShader, const std::string& fragmentShader)
+unsigned int SHADER::CreateShader(const std::string& sVertexShader, const std::string& sFragmentShader)
 {
-    unsigned int program = glCreateProgram();
-    unsigned int vs = CompileShader(GL_VERTEX_SHADER, vertexShader);
-    unsigned int fs = CompileShader(GL_FRAGMENT_SHADER, fragmentShader);
+    unsigned int iProgram = glCreateProgram();
+    unsigned int iVertexCode = CompileShader(GL_VERTEX_SHADER, sVertexShader);
+    unsigned int iFragCode = CompileShader(GL_FRAGMENT_SHADER, sFragmentShader);
 
-    glAttachShader(program, vs);
-    glAttachShader(program, fs);
-    glLinkProgram(program);
+    glAttachShader(iProgram, iVertexCode);
+    glAttachShader(iProgram, iFragCode);
+    glLinkProgram(iProgram);
 
     int result;
-    char infoLog[512];
-    glGetProgramiv(program, GL_LINK_STATUS, &result);
+    char infoLog[LOG_SIZE];
+    glGetProgramiv(iProgram, GL_LINK_STATUS, &result);
     if (!result)
     {
-        glGetProgramInfoLog(program, 512, nullptr, infoLog);
+        glGetProgramInfoLog(iProgram, LOG_SIZE, nullptr, infoLog);
         cout << "ERROR::CreateShader\n" << infoLog << endl;
     }
 
-    glValidateProgram(program);
+    glValidateProgram(iProgram);
 
-    glDeleteShader(vs);
-    glDeleteShader(fs);
+    glDeleteShader(iVertexCode);
+    glDeleteShader(iFragCode);
 
-    return program;
+    return iProgram;
+}
+
+void SHADER::Use()
+{
+    glUseProgram(_iID);
+}
+
+void SHADER::SetBool(const std::string& sName, bool bValue) const
+{
+    glUniform1i(glGetUniformLocation(_iID, sName.c_str()), bValue);
+}
+
+void SHADER::SetInt(const std::string& sName, int iValue) const
+{
+    glUniform1i(glGetUniformLocation(_iID, sName.c_str()), iValue);
+}
+
+void SHADER::SetFloat(const std::string& sName, float fValue) const
+{
+    glUniform1f(glGetUniformLocation(_iID, sName.c_str()), fValue);
 }
