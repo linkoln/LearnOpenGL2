@@ -5,7 +5,7 @@
 
 #include "Shader_global.h"
 
-class SHADER_API SHADER
+class SHADER
 {
 public:
     SHADER() = default;

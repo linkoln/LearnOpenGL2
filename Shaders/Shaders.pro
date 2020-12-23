@@ -4,6 +4,7 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += \
+        Shader.cpp \
         glad.c \
         main.cpp
 
@@ -29,4 +30,7 @@ LIBS += -lopengl32 -lgdi32 -luser32
 
 RESOURCES += \
     shaders.qrc
+
+HEADERS += \
+    Shader.h
 
