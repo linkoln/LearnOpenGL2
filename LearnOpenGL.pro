@@ -5,4 +5,5 @@ SUBDIRS += \
     HelloTriangle \
     HelloWindow \
     Shaders \
+    Textures \
     Utils/Shader

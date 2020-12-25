@@ -56,9 +56,9 @@ int main()
     float vertices[] =
     {
         // positions         // colors
-        0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,  // bottom right
-        -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,  // bottom left
-        0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f   // top
+        0.5f, 0.5f, 0.0f,  1.0f, 0.0f, 0.0f,  // bottom right
+        -0.5f, 0.5f, 0.0f,  0.0f, 1.0f, 0.0f,  // bottom left
+        0.0f,  -0.5f, 0.0f,  0.0f, 0.0f, 1.0f   // top
     };
 
     unsigned int VBO, VAO;
@@ -98,7 +98,7 @@ int main()
         // render the triangle
         ourShader.Use();
         glBindVertexArray(VAO);
-        ourShader.SetFloat("color", 1.0f);
+        ourShader.SetFloat("offset", 0.0f);
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
